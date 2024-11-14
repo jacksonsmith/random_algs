@@ -13,14 +13,14 @@ function backtrack(nums, res, perm, used) {
     }
     for (var i = 0; i < nums.length; i++) {
         //decision
-        // if (!used[nums[i]]) {
+        if (!used[nums[i]]) {
             perm.push(nums[i]);
             used[nums[i]] = true;
             backtrack(nums, res, perm, used);
             //undo
             perm.pop()
             used[nums[i]] = false;
-        // }
+        }
     }
 }
 permute([1, 2, 3]);
