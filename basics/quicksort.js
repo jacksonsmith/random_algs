@@ -1,5 +1,5 @@
 function sort(nums) {
-     let sorted = qs(nums)
+     let sorted = qs_otimized(nums)
 
      console.log(sorted)
 }
@@ -7,7 +7,6 @@ function sort(nums) {
 
 function qs(nums) {
     if (nums.length <= 1) return nums
-    // if (nums.length === 0) return []
 
     let left = []
     let right = []
@@ -24,16 +23,37 @@ function qs(nums) {
     return [...qs(left),nums[p],...qs(right)]
 }
 
-// function partition(nums, start, end) {
-//     let pivot = start
-//     for (let i = start; i < end; i++ ) {
-//         if (nums[i] < pivot) {
-//             swap(i, pivot)
-//             pivot++
-//         }
-//     }
 
-//     return pivot
-// }
+function qs_otimized(nums, end = nums.length - 1, start = 0) {
+    if (start > end) return nums
 
-sort([4,7,2,6,4,1,8,3])
+    let p = partition(nums, end, start)
+    
+    qs_otimized(nums, p - 1, start), 
+    qs_otimized(nums, end, p + 1)
+
+    return nums
+}
+//[5,9,3,2,8]
+// i   j  
+// [2,7,4,6,4,1,8,3]
+// [2,1,4,6,4,7,8,3]
+// [2,1,3,6,4,7,8,4]
+function partition(nums, end, start) {
+    let p = nums[end]
+    let i = start - 1
+    for (let j = start; j < end -1; j++ ) {
+        if (nums[j] < p) {
+            i++
+            [[nums[i], nums[j]] = [nums[j], nums[i]]]
+        }
+    }
+
+    [[nums[i +1], nums[end]] = [nums[end], nums[i + 1]]]
+
+    return i + 1
+}
+
+
+sort([4,7,2])
+// sort([4,7,2,6,4,1,8,3])
