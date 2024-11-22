@@ -85,7 +85,8 @@ CustomQueue.prototype.popBack = function () {
 };
 
 var maxSlidingWindow = function (nums, k) {
-    let queue = new CustomQueue();
+    let queue = new CustomQueue(); //[Front] -> Node(1) <--> Node(2) <- [Back]
+    
     let result = [];
 
     for (let i = 0; i < nums.length; i++) {
@@ -107,7 +108,39 @@ var maxSlidingWindow = function (nums, k) {
     return result;
 };
 
+var maxSlidingWindowHeap = function (nums, k) {
+    const { maxHeap } = require('../aux/maxheap'); // Supondo que você tenha o MaxHeap
+    const result = [];
+
+    // Insere os primeiros k elementos no heap
+    for (let i = 0; i < k; i++) {
+        maxHeap.insert({ value: nums[i], index: i }); // Insere valor e índice
+    }
+
+    result.push(maxHeap.getMax().value); // Adiciona o maior valor inicial ao resultado
+
+    // Processa o restante dos elementos
+    for (let i = k; i < nums.length; i++) {
+        // Remove elementos fora da janela
+        while (maxHeap.getMax().index <= i - k) {
+            maxHeap.extractMax();
+        }
+
+        // Insere o novo elemento no heap
+        maxHeap.insert({ value: nums[i], index: i });
+
+        // Adiciona o maior valor da janela atual ao resultado
+        result.push(maxHeap.getMax().value);
+    }
+
+    maxHeap.heap = []
+
+    return result;
+};
+
 // Define arraysEqual antes de usá-la
 const arraysEqual = (a, b) => a.length === b.length && a.every((val, index) => val === b[index]);
 
 console.log(arraysEqual(maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3), [3, 3, 5, 5, 6, 7])); // Deve retornar true
+
+console.log(arraysEqual(maxSlidingWindowHeap([1, 3, -1, -3, 5, 3, 6, 7], 3), [3, 3, 5, 5, 6, 7])); // Deve retornar true
