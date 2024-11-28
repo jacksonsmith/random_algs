@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/max-subarray.js",
+            "program": "${workspaceFolder}/leet_code/997.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
